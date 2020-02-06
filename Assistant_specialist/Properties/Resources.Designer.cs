@@ -19,7 +19,7 @@ namespace Assistant_specialist.Properties {
     // с помощью такого средства, как ResGen или Visual Studio.
     // Чтобы добавить или удалить член, измените файл .ResX и снова запустите ResGen
     // с параметром /str или перестройте свой проект VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -277,7 +277,7 @@ namespace Assistant_specialist.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Положительный ответ.
+        ///   Ищет локализованную строку, похожую на Положительный ответ тест.
         /// </summary>
         public static string PositiveResponse {
             get {

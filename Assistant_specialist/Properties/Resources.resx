@@ -192,7 +192,7 @@
     <value>Некорректный исходящий номер</value>
   </data>
   <data name="PositiveResponse" xml:space="preserve">
-    <value>Положительный ответ</value>
+    <value>Положительный ответ тест</value>
     <comment>Имя главного окна</comment>
   </data>
   <data name="PrintingDocument" xml:space="preserve">
