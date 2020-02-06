@@ -1,0 +1,113 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="CheckBox.TransparentBackground" Color="#00000000"/>
+    <SolidColorBrush x:Key="CheckBox.Static.Brush" x:Shared="False"  Color="#ff4d4d4d"/>
+    <SolidColorBrush x:Key="CheckBox.Checked.Brush" Color="#ffd4d4d4"/>
+    <SolidColorBrush x:Key="CheckBox.Static.Border.Brush" x:Shared="False"  Color="#ff828282"/>
+    <SolidColorBrush x:Key="CheckBox.Checked.Border.Brush" Color="#ffd4d4d4"/>
+    <SolidColorBrush x:Key="CheckBox.Static.Check.Brush" x:Shared="False" Color="#00323232"/>
+    <SolidColorBrush x:Key="CheckBox.Checked.Check.Brush" Color="#ff323232"/>
+    <SolidColorBrush x:Key="CheckBox.Static.Shadow.Brush" x:Shared="False" Color="#00000000"/>
+    <SolidColorBrush x:Key="CheckBox.Pressed.Shadow.Brush" Color="#4c000000"/>
+    <SolidColorBrush x:Key="CheckBox.Static.Focus.Brush" x:Shared="False" Color="#000f64d2"/>
+    <SolidColorBrush x:Key="CheckBox.Focused.Focus.Brush" Color="#ff0f64d2"/>
+    <SolidColorBrush x:Key="CheckBox.Foreground" Color="#ffffffff"/>
+    <Style TargetType="{x:Type CheckBox}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        <Setter Property="Foreground" Value="{StaticResource CheckBox.Foreground}"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Padding" Value="7,0,0,0"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <Grid x:Name="PART_Grid" Background="{StaticResource CheckBox.TransparentBackground}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.2"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState Name="Normal"/>
+                                <VisualState Name="MouseOver"/>
+                                <VisualState Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="PART_Image" Storyboard.TargetProperty="(Image.Source).(DrawingImage.Drawing).(DrawingGroup.Children)[1].(GeometryDrawing.Brush).(SolidColorBrush.Color)" To="{Binding Color, Source={StaticResource CheckBox.Pressed.Shadow.Brush}}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PART_Grid" Storyboard.TargetProperty="(Grid.Opacity)" To="0.56" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup Name="FocusStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.2"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState Name="Focused">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="PART_Image" Storyboard.TargetProperty="(Image.Source).(DrawingImage.Drawing).(DrawingGroup.Children)[3].(GeometryDrawing.Pen).(Pen.Brush).(SolidColorBrush.Color)" To="{Binding Color, Source={StaticResource CheckBox.Focused.Focus.Brush}}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState Name="Unfocused"/>
+                            </VisualStateGroup>
+                            <VisualStateGroup Name="CheckStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.2"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState Name="Checked">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="PART_Image" Storyboard.TargetProperty="(Image.Source).(DrawingImage.Drawing).(DrawingGroup.Children)[0].(GeometryDrawing.Brush).(SolidColorBrush.Color)" To="{Binding Color, Source={StaticResource CheckBox.Checked.Brush}}" Duration="0"/>
+                                        <ColorAnimation Storyboard.TargetName="PART_Image" Storyboard.TargetProperty="(Image.Source).(DrawingImage.Drawing).(DrawingGroup.Children)[1].(GeometryDrawing.Pen).(Pen.Brush).(SolidColorBrush.Color)" To="{Binding Color, Source={StaticResource CheckBox.Checked.Border.Brush}}" Duration="0"/>
+                                        <ColorAnimation Storyboard.TargetName="PART_Image" Storyboard.TargetProperty="(Image.Source).(DrawingImage.Drawing).(DrawingGroup.Children)[2].(GeometryDrawing.Brush).(SolidColorBrush.Color)" To="{Binding Color, Source={StaticResource CheckBox.Checked.Check.Brush}}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState Name="Unchecked"/>
+                                <VisualState Name="Indeterminate"/>
+                            </VisualStateGroup>
+                            <VisualStateGroup Name="ValidationStates">
+                                <VisualState Name="Valid"/>
+                                <VisualState Name="InvalidUnfocused"/>
+                                <VisualState Name="InvalidFocused"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Image x:Name="PART_Image" Grid.Column="0" Width="13" Height="13" HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True">
+                            <Image.Source>
+                                <DrawingImage>
+                                    <DrawingImage.Drawing>
+                                        <DrawingGroup>
+                                            <!--Фон-->
+                                            <GeometryDrawing Brush="{StaticResource CheckBox.Static.Brush}" Geometry="M10.046,13.046 L3.046,13.046 C1.389,13.046 0.046,11.703 0.046,10.046 L0.046,3.046 C0.046,1.389 1.389,0.046 3.046,0.046 L10.046,0.046 C11.703,0.046 13.046,1.389 13.046,3.046 L13.046,10.046 C13.046,11.703 11.703,13.046 10.046,13.046 Z"/>
+                                            <!--Затенение и рамка-->
+                                            <GeometryDrawing Brush="{StaticResource CheckBox.Static.Shadow.Brush}" Geometry="M10.046,13.046 L3.046,13.046 C1.389,13.046 0.046,11.703 0.046,10.046 L0.046,3.046 C0.046,1.389 1.389,0.046 3.046,0.046 L10.046,0.046 C11.703,0.046 13.046,1.389 13.046,3.046 L13.046,10.046 C13.046,11.703 11.703,13.046 10.046,13.046 Z">
+                                                <GeometryDrawing.Pen>
+                                                    <Pen Brush="{StaticResource CheckBox.Static.Border.Brush}" Thickness="1"/>
+                                                </GeometryDrawing.Pen>
+                                            </GeometryDrawing>
+                                            <!--Галочка-->
+                                            <GeometryDrawing Brush="{StaticResource CheckBox.Static.Check.Brush}" Geometry="M9.361,2.755 L10.955,3.963 L6.120,10.337 L2.137,7.315 L3.345,5.722 L5.735,7.535 L9.361,2.755 Z"/>
+                                            <!--Фокус-->
+                                            <GeometryDrawing Geometry="M10.046,13.046 L3.046,13.046 C1.389,13.046 0.046,11.703 0.046,10.046 L0.046,3.046 C0.046,1.389 1.389,0.046 3.046,0.046 L10.046,0.046 C11.703,0.046 13.046,1.389 13.046,3.046 L13.046,10.046 C13.046,11.703 11.703,13.046 10.046,13.046 Z">
+                                                <GeometryDrawing.Pen>
+                                                    <Pen Brush="{StaticResource CheckBox.Static.Focus.Brush}" Thickness="1"/>
+                                                </GeometryDrawing.Pen>
+                                            </GeometryDrawing>
+                                        </DrawingGroup>
+                                    </DrawingImage.Drawing>
+                                </DrawingImage>
+                            </Image.Source>
+                        </Image>
+                        <ContentPresenter Grid.Column="1" RecognizesAccessKey="True" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

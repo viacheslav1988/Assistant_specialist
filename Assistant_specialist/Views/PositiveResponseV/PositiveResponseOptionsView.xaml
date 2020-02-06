@@ -1,0 +1,92 @@
+﻿<UserControl x:Class="Assistant_specialist.Views.PositiveResponseV.PositiveResponseOptionsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:Validations="clr-namespace:Assistant_specialist.Validations"
+             xmlns:CustomControl="clr-namespace:Assistant_specialist.CustomControl"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ContextMenu x:Key="ContextMenuTexBox">
+            <MenuItem Command="Cut"/>
+            <MenuItem Command="Copy"/>
+            <MenuItem Command="Paste"/>
+            <Separator/>
+            <MenuItem Header="Очистить поле" Command="{Binding ClearTextCommand}" CommandParameter="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContextMenu}}}"/>
+        </ContextMenu>
+        <i:EventTrigger x:Key="UpdateTextLostFocus" x:Shared="False" EventName="LostFocus">
+            <i:InvokeCommandAction Command="{Binding UpdateTextLostFocusCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type CustomControl:WatermarkTextBox}}}"/>
+        </i:EventTrigger>
+        <i:EventTrigger x:Key="UpdateTextEnterButton" x:Shared="False" EventName="PreviewKeyDown">
+            <i:InvokeCommandAction Command="{Binding UpdateTextEnterButtonCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type CustomControl:WatermarkTextBox}}}"/>
+        </i:EventTrigger>
+        <i:EventTrigger x:Key="UpdateTextTimers" x:Shared="False" EventName="TextChanged">
+            <i:InvokeCommandAction Command="{Binding UpdateTextTimersCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type CustomControl:WatermarkTextBox}}}"/>
+        </i:EventTrigger>
+        <Style TargetType="{x:Type CustomControl:WatermarkTextBox}" BasedOn="{StaticResource {x:Type CustomControl:WatermarkTextBox}}">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="MinWidth" Value="290"/>
+        </Style>
+        <Style x:Key="NameSpecialistStyle" TargetType="{x:Type CustomControl:WatermarkTextBox}" BasedOn="{StaticResource {x:Type CustomControl:WatermarkTextBox}}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ShowSpecialist}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <StackPanel Margin="5,3,5,5">
+        <!--Полный почтовый адрес-->
+        <CheckBox Content="Полный почтовый адрес" IsChecked="{Binding FullPostalAddress}" Margin="0,10"/>
+        <!--Склонение имени абонента-->
+        <CheckBox Content="Склонение имени абонента (в разработке)" IsChecked="{Binding DeclensionFullName}" IsEnabled="False" Margin="0,10"/>
+        <!--Должность подписывающего-->
+        <CustomControl:WatermarkTextBox x:Name="PositionSignDocuments" WatermarkText="Должность подписывающего" ContextMenu="{StaticResource ContextMenuTexBox}" Margin="0,10">
+            <CustomControl:WatermarkTextBox.Text>
+                <Binding Path="PositionSignDocuments" Mode="TwoWay" UpdateSourceTrigger="Explicit">
+                    <Binding.ValidationRules>
+                        <Validations:ValidatingText Pattern="^[А-Я][а-яё]+(\s[А-яё]{2,})*$" ErrorText="Некорректная должность"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </CustomControl:WatermarkTextBox.Text>
+            <i:Interaction.Triggers>
+                <StaticResource ResourceKey="UpdateTextLostFocus"/>
+                <StaticResource ResourceKey="UpdateTextEnterButton"/>
+                <StaticResource ResourceKey="UpdateTextTimers"/>
+            </i:Interaction.Triggers>
+        </CustomControl:WatermarkTextBox>
+        <!--Ф.И.О. подписывающего-->
+        <CustomControl:WatermarkTextBox x:Name="NameSignDocuments" WatermarkText="Ф.И.О. подписывающего" ContextMenu="{StaticResource ContextMenuTexBox}" Margin="0,10">
+            <CustomControl:WatermarkTextBox.Text>
+                <Binding Path="NameSignDocuments" Mode="TwoWay" UpdateSourceTrigger="Explicit">
+                    <Binding.ValidationRules>
+                        <Validations:ValidatingText Pattern="^[А-Я][а-яё]+(\s([А-Я][.]\s?){2}|(\s[А-Я][а-яё]+){2})$" ErrorText="Некорректное Ф.И.О. подписывающего"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </CustomControl:WatermarkTextBox.Text>
+            <i:Interaction.Triggers>
+                <StaticResource ResourceKey="UpdateTextLostFocus"/>
+                <StaticResource ResourceKey="UpdateTextEnterButton"/>
+                <StaticResource ResourceKey="UpdateTextTimers"/>
+            </i:Interaction.Triggers>
+        </CustomControl:WatermarkTextBox>
+        <!--Показывать имя специалиста-->
+        <CheckBox Content="Показывать имя специалиста" IsChecked="{Binding ShowSpecialist}" Margin="0,10"/>
+        <!--Ф.И.О. специалиста-->
+        <CustomControl:WatermarkTextBox x:Name="NameSpecialist" WatermarkText="Ф.И.О. специалиста" ContextMenu="{StaticResource ContextMenuTexBox}" Style="{StaticResource NameSpecialistStyle}" Margin="0,10,0,0">
+            <CustomControl:WatermarkTextBox.Text>
+                <Binding Path="NameSpecialist" Mode="TwoWay" UpdateSourceTrigger="Explicit">
+                    <Binding.ValidationRules>
+                        <Validations:ValidatingText Pattern="^[А-Я][а-яё]+(\s([А-Я][.]\s?){2}|(\s[А-Я][а-яё]+){2})$" ErrorText="Некорректное Ф.И.О. специалиста"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </CustomControl:WatermarkTextBox.Text>
+            <i:Interaction.Triggers>
+                <StaticResource ResourceKey="UpdateTextLostFocus"/>
+                <StaticResource ResourceKey="UpdateTextEnterButton"/>
+                <StaticResource ResourceKey="UpdateTextTimers"/>
+            </i:Interaction.Triggers>
+        </CustomControl:WatermarkTextBox>
+    </StackPanel>
+</UserControl>

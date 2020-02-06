@@ -1,0 +1,35 @@
+﻿<Application x:Class="Assistant_specialist.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Converters="clr-namespace:Assistant_specialist.Converters"
+             StartupUri="Views/MainView.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/ButtonStyle.xaml"/>
+                <ResourceDictionary Source="Resources/CheckBoxStyle.xaml"/>
+                <ResourceDictionary Source="Resources/ComboBoxStyle.xaml"/>
+                <ResourceDictionary Source="Resources/DateDiscountPanelErrorStyle.xaml"/>
+                <ResourceDictionary Source="Resources/ExpanderStyle.xaml"/>
+                <ResourceDictionary Source="Resources/ExtendedSliderStyle.xaml"/>
+                <ResourceDictionary Source="Resources/GroupBoxStyle.xaml"/>
+                <ResourceDictionary Source="Resources/IconsAndImages.xaml"/>
+                <ResourceDictionary Source="Resources/ListBoxStyle.xaml"/>
+                <ResourceDictionary Source="Resources/MenuStyle.xaml"/>
+                <ResourceDictionary Source="Resources/RadioButtonStyle.xaml"/>
+                <ResourceDictionary Source="Resources/SliderStyle.xaml"/>
+                <ResourceDictionary Source="Resources/TabControlStyle.xaml"/>
+                <ResourceDictionary Source="Resources/WatermarkDatePickerStyle.xaml"/>
+                <ResourceDictionary Source="Resources/WatermarkTextBoxStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Converters:AddressConverter x:Key="AddressConverter"/>
+            <Converters:AmountInWordsDecimalStringConverter x:Key="AmountInWordsDecimalStringConverter"/>
+            <Converters:CutNameConverter x:Key="CutNameConverter"/>
+            <Converters:EnumBooleanConverter x:Key="EnumBooleanConverter"/>
+            <Converters:EnumDescriptionValueConverter x:Key="EnumDescriptionValueConverter"/>
+            <Converters:FindElementNameConverter x:Key="FindElementNameConverter"/>
+            <Converters:FindElementNameListConverter x:Key="FindElementNameListConverter"/>
+            <Converters:SelectedCornerRadiusConverter x:Key="SelectedCornerRadiusConverter"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

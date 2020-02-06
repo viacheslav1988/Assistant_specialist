@@ -1,0 +1,609 @@
+﻿<UserControl x:Class="Assistant_specialist.Views.PositiveResponseV.PositiveResponseDocumentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:Properties="clr-namespace:Assistant_specialist.Properties"
+             xmlns:Models="clr-namespace:Assistant_specialist.Models.PositiveResponseM"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="Document.Background" Color="#ffffffff"/>
+        <SolidColorBrush x:Key="Document.Foreground0" Color="#ffffffff"/>
+        <SolidColorBrush x:Key="Document.Foreground1" Color="#ffff0000"/>
+    </UserControl.Resources>
+    <Canvas Width="21cm" Height="29.7cm" Background="{StaticResource Document.Background}" TextBlock.FontFamily="pack://application:,,,/Resources/Fonts/ChevinCyrillic/#Chevin Cyrillic">
+        <!--Шапка документа-->
+        <Image Canvas.Left="2cm" Canvas.Top="1.7cm" Width="17cm" Height="7.65cm" Source="{StaticResource HeaderDocument}"/>
+        <TextBlock Canvas.Left="5.35cm" Canvas.Top="3.25cm" FontSize="14" Foreground="{StaticResource Document.Foreground0}">
+            <Run Text="дом">
+            </Run><Run Text=".ru" FontWeight="Bold"/>
+        </TextBlock>
+        <TextBlock Canvas.Left="2cm" Canvas.Top="4.2cm" Width="7.7cm" TextAlignment="Center" LineHeight="12.5" FontSize="9.5">
+            <Run Text="Филиал акционерного общества&#13;&#10;">                
+            </Run><Run Text="«ЭР-Телеком Холдинг» в городе Екатеринбург&#13;&#10;">                
+            </Run><Run Text="(Филиал в г. Екатеринбург АО «ЭР-Телеком Холдинг»)&#13;&#10;">                
+            </Run><Run Text="ул. 8 марта, д. 32А, г. Екатеринбург 620014&#13;&#10;">                
+            </Run><Run Foreground="{StaticResource Document.Foreground1}" Text="тел. ">                
+            </Run><Run Text="(343) 239 40 00, ">                
+            </Run><Run Foreground="{StaticResource Document.Foreground1}" Text="факс ">                
+            </Run><Run Text="(343) 239 40 02&#13;&#10;">                
+            </Run><Run Text="e-mail: ekaterinburg@domru.ru, www.domru.ru&#13;&#10;">                
+            </Run><Run Text="ОКПО 69035472, ОГРН 1065902028620&#13;&#10;">                
+            </Run><Run Text="ИНН 5902202276, КПП 667243001"/>
+        </TextBlock>
+        <TextBlock Canvas.Left="5.7cm" Canvas.Top="7.3cm" Text="№"/>
+        <TextBlock Canvas.Left="1.85cm" Canvas.Top="8.0cm" Text="на №"/>
+        <TextBlock Canvas.Left="5.75cm" Canvas.Top="8.0cm" Text="от"/>
+        <TextBlock Canvas.Left="2.2cm" Canvas.Top="10cm" FontStyle="Italic" Text="Ответ на претензию"/>
+        <!--Адрес отправителя и получателя-->
+        <TextBlock Canvas.Left="11.5cm" Canvas.Top="4.2cm" Width="7.3cm" TextAlignment="Right" FontWeight="Bold">
+            <Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="От: АО «ЭР-Телеком Холдинг»&#13;&#10;ул. 8 Марта, 32А&#13;&#10;г.Екатеринбург, Свердловская обл., 620014&#13;&#10;&#13;&#10;"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding FullPostalAddress, Source={x:Static Properties:PositiveResponseSettings.Default}}" Value="False">
+                                <Setter Property="Text" Value=""/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run Text="Кому: ">
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="{Binding FullName}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding FullName}" Value="{x:Null}">
+                                <Setter Property="Text" Value="(отсутствует Ф.И.О.)"/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding FullName}" Value="">
+                                <Setter Property="Text" Value="(отсутствует Ф.И.О.)"/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run Text="&#13;&#10;">
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="{Binding Address, Converter={StaticResource AddressConverter}}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Address}" Value="{x:Null}">
+                                <Setter Property="Text" Value="(отсутствует адрес)"/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Address}" Value="">
+                                <Setter Property="Text" Value="(отсутствует адрес)"/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run>
+        </TextBlock>
+        <!--Дата ответа-->
+        <TextBlock Canvas.Left="2.1cm" Canvas.Top="7.15cm" Width="3.3cm" TextAlignment="Center">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Text" Value="{Binding OutgoingDate, StringFormat='dd.MM.yyyy'}"/>
+                    <Setter Property="FontSize" Value="13"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding OutgoingDate}" Value="{x:Null}">
+                            <Setter Property="Text" Value="(отсутствует дата ответа)"/>
+                            <Setter Property="FontSize" Value="9.5"/>
+                            <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        <!--Исходящий номер-->
+        <TextBlock Canvas.Left="6.35cm" Canvas.Top="7.15cm" Width="3.3cm" TextAlignment="Center">
+            <Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="EK/01-07-"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding OutgoingNumber}" Value="{x:Null}">
+                                <Setter Property="Text" Value=""/>
+                                <Setter Property="FontSize" Value="9.5"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding OutgoingNumber}" Value="">
+                                <Setter Property="Text" Value=""/>
+                                <Setter Property="FontSize" Value="9.5"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="{Binding OutgoingNumber}"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding OutgoingNumber}" Value="{x:Null}">
+                                <Setter Property="Text" Value="(отсутствует исходящий номер)"/>
+                                <Setter Property="FontSize" Value="9.5"/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding OutgoingNumber}" Value="">
+                                <Setter Property="Text" Value="(отсутствует исходящий номер)"/>
+                                <Setter Property="FontSize" Value="9.5"/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run>
+        </TextBlock>
+        <!--Обращение к абоненту-->
+        <TextBlock Canvas.Left="2.1cm" Canvas.Top="12cm" Width="16.8cm" TextAlignment="Center" FontSize="15" FontWeight="Bold">
+            <Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=Gender}" Value="{x:Static Models:Gender.Male}">
+                                <Setter Property="Text" Value="Уважаемый "/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=Gender}" Value="{x:Static Models:Gender.Female}">
+                                <Setter Property="Text" Value="Уважаемая "/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding FullName}" Value="{x:Null}">
+                                <Setter Property="Text" Value=""/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding FullName}" Value="">
+                                <Setter Property="Text" Value=""/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="{Binding Path=FullName, Converter={StaticResource CutNameConverter}}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding FullName}" Value="{x:Null}">
+                                <Setter Property="Text" Value="(отсутствует Ф.И.О.)"/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding FullName}" Value="">
+                                <Setter Property="Text" Value="(отсутствует Ф.И.О.)"/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run>
+        </TextBlock>
+        <!--Основной ответ-->
+        <TextBlock Canvas.Left="2cm" Canvas.Top="13.5cm" Width="17cm" TextWrapping="Wrap" TextAlignment="Justify" FontSize="14">
+            <!--Абзац 1-->
+            <Run Text="&#9;Филиал АО «ЭР-Телеком Холдинг» в г. Екатеринбурге благодарит Вас за выбор нашей компании!&#13;&#10;"/>
+            <!--Абзац 2-->
+            <Run Text="&#9;В ответ на Ваше заявление от ">
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="{Binding StatementRecalculationDate, StringFormat='dd.MM.yyyy'}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StatementRecalculationDate}" Value="{x:Null}">
+                                <Setter Property="Text" Value="(отсутствует дата перерасчета)"/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run Text=" года сообщаем следующее:&#13;&#10;"/>
+            <!--Абзац 3-->
+            <Run Text="&#9;АО «ЭР-Телеком Холдинг», (далее по тексту – Общество) является организацией, оказывающей физическим и юридическим лицам услуги кабельного телевидения, доступа в интернет, телефонной связи и Цифрового кабельного телевидения «Центр домашних развлечений «Дом.ru TV» на территории г.&#160;Екатеринбурга на основании лицензий на предоставление услуг связи.&#13;&#10;"/>
+            <!--Абзац 4-->
+            <Run Text="&#9;На основании поданного Вами заявления на перерасчет по Договору на предоставление услуг связи №">
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="{Binding ContractNumber}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ContractNumber}" Value="{x:Null}">
+                                <Setter Property="Text" Value=" (отсутствует номер договора)"/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ContractNumber}" Value="">
+                                <Setter Property="Text" Value=" (отсутствует номер договора)"/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>                    
+                </Run.Style>
+            </Run><Run Text=" от ">
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="{Binding ContractDate, StringFormat='dd.MM.yyyy'}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ContractDate}" Value="{x:Null}">
+                                <Setter Property="Text" Value="(отсутствует дата договора) "/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="г. был выполнен перерасчет в размере "/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=DiscountType}" Value="{x:Static Models:DiscountType.Discount}">
+                                <Setter Property="Text" Value="г. была предоставлена скидка в размере "/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="{Binding AmountRecalculation, Converter={StaticResource AmountInWordsDecimalStringConverter}}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=DiscountType}" Value="{x:Static Models:DiscountType.Discount}">
+                                <Setter Property="Text" Value=""/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=DiscountType}" Value="{x:Static Models:DiscountType.Recalculation}"/>
+                                    <Condition Binding="{Binding Path=AmountRecalculation}" Value="{x:Static System:Decimal.Zero}"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="Text" Value="(отсутствует сумма перерасчета) "/>
+                                    <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=DiscountType}" Value="{x:Static Models:DiscountType.DiscountAndRecalculation}"/>
+                                    <Condition Binding="{Binding Path=AmountRecalculation}" Value="{x:Static System:Decimal.Zero}"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="Text" Value="(отсутствует сумма перерасчета) "/>
+                                    <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DiscountType}" Value="{x:Static Models:DiscountType.Recalculation}">
+                                <Setter Property="Text" Value="."/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding DiscountType}" Value="{x:Static Models:DiscountType.DiscountAndRecalculation}">
+                                <Setter Property="Text" Value=", а так же предоставлена скидка в размере "/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="{Binding Discounts, Converter={StaticResource EnumDescriptionValueConverter}, ConverterParameter='value'}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DiscountType}" Value="{x:Static Models:DiscountType.Recalculation}">
+                                <Setter Property="Text" Value=""/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value=" на период с "/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DiscountType}" Value="{x:Static Models:DiscountType.Recalculation}">
+                                <Setter Property="Text" Value=""/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="{Binding StartDateDiscount, StringFormat='dd.MM.yyyy'}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StartDateDiscount}" Value="{x:Null}">
+                                <Setter Property="Text" Value="(отсутствует дата начала скидки) "/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding DiscountType}" Value="{x:Static Models:DiscountType.Recalculation}">
+                                <Setter Property="Text" Value=""/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="г. до "/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DiscountType}" Value="{x:Static Models:DiscountType.Recalculation}">
+                                <Setter Property="Text" Value=""/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="{Binding EndDateDiscount, StringFormat='dd.MM.yyyy'}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding EndDateDiscount}" Value="{x:Null}">
+                                <Setter Property="Text" Value="(отсутствует дата окончания скидки) "/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding DiscountType}" Value="{x:Static Models:DiscountType.Recalculation}">
+                                <Setter Property="Text" Value=""/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="г."/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DiscountType}" Value="{x:Static Models:DiscountType.Recalculation}">
+                                <Setter Property="Text" Value=""/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run>
+            <!--Абзац 5-6-->
+            <Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StatementTermination}" Value="True">
+                                <Setter Property="Text" Value="&#13;&#10;&#9;Договор №"/>
+                            </DataTrigger>
+                        </Style.Triggers>                        
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StatementTermination}" Value="True">
+                                <Setter Property="Text" Value="{Binding ContractNumber}"/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding StatementTermination}" Value="True"/>
+                                    <Condition Binding="{Binding ContractNumber}" Value="{x:Null}"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="Text" Value=" (отсутствует номер договора)"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding StatementTermination}" Value="True"/>
+                                    <Condition Binding="{Binding ContractNumber}" Value=""/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="Text" Value=" (отсутствует номер договора)"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StatementTermination}" Value="True">
+                                <Setter Property="Text" Value=" от "/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StatementTermination}" Value="True">
+                                <Setter Property="Text" Value="{Binding ContractDate, StringFormat='dd.MM.yyyy'}"/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding StatementTermination}" Value="True"/>
+                                    <Condition Binding="{Binding ContractDate}" Value="{x:Null}"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="Text" Value="(отсутствует дата договора) "/>
+                                    <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StatementTermination}" Value="True">
+                                <Setter Property="Text" Value="г. закрыт на основании заявления от "/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StatementTermination}" Value="True">
+                                <Setter Property="Text" Value="{Binding ContractTerminationDate, StringFormat='dd.MM.yyyy'}"/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding StatementTermination}" Value="True"/>
+                                    <Condition Binding="{Binding ContractTerminationDate}" Value="{x:Null}"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="Text" Value="(отсутствует дата расторжения договора) "/>
+                                    <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">                        
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StatementTermination}" Value="True">
+                                <Setter Property="Text" Value="г.&#13;&#10;&#9;Оставшаяся сумма задолженности в размере "/>                                
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding StatementTermination}" Value="True"/>
+                                    <Condition Binding="{Binding AmountDebt}" Value="{x:Static System:Decimal.Zero}"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="Text" Value="г., задолженность отсутствует."/>
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>                            
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StatementTermination}" Value="True">
+                                <Setter Property="Text" Value="{Binding AmountDebt, Converter={StaticResource AmountInWordsDecimalStringConverter}}"/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding StatementTermination}" Value="True"/>
+                                    <Condition Binding="{Binding AmountDebt}" Value="{x:Static System:Decimal.Zero}"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="Text" Value=""/>
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StatementTermination}" Value="True">
+                                <Setter Property="Text" Value=" подлежит к оплате."/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding StatementTermination}" Value="True"/>
+                                    <Condition Binding="{Binding AmountDebt}" Value="{x:Static System:Decimal.Zero}"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="Text" Value=""/>
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run>
+            <!--Абзац 7-->
+            <Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="&#13;&#10;&#9;Приносим извинения за доставленные неудобства."/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StatementTermination}" Value="False">
+                                <Setter Property="Text" Value="&#13;&#10;&#9;Благодарим за Ваше обращение и надеемся на дальнейшее сотрудничество!"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run>
+        </TextBlock>
+        <!--Реквизиты-->
+        <TextBlock Canvas.Left="2.1cm" Canvas.Top="20.2cm" LineHeight="21" Width="8.4cm" FontSize="13.5">
+            <Run Text="С уважением,&#13;&#10;">
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="{Binding PositionSignDocuments, Source={x:Static Properties:PositiveResponseSettings.Default}}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding PositionSignDocuments, Source={x:Static Properties:PositiveResponseSettings.Default}}" Value="">
+                                <Setter Property="Text" Value="(отсутствует должность подписывающего)"/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run Text="&#13;&#10;АО «ЭР-Телеком Холдинг»&#13;&#10;">
+            </Run><Run Text="в г. Екатеринбург&#13;&#10;">
+            </Run><Run Text="Тел.: (343) 239-40-00)"/>
+        </TextBlock>
+        <!--Ф.И.О. подписывающего-->
+        <TextBlock Canvas.Left="10.5cm" Canvas.Top="20.2cm" LineHeight="21" Width="8.4cm" TextAlignment="Right" FontSize="13.5">
+            <Run Text="&#13;&#10;">
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="{Binding NameSignDocuments, Source={x:Static Properties:PositiveResponseSettings.Default}}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding NameSignDocuments, Source={x:Static Properties:PositiveResponseSettings.Default}}" Value="">
+                                <Setter Property="Text" Value="(отсутствует Ф.И.О. подписывающего)"/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run>
+        </TextBlock>
+        <!--Ф.И.О. специалиста (исполнителя)-->
+        <TextBlock Canvas.Left="2.1cm" Canvas.Top="24.5cm" Width="8.4cm">
+            <Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="Исп.: "/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ShowSpecialist, Source={x:Static Properties:PositiveResponseSettings.Default}}" Value="False">
+                                <Setter Property="Text" Value=""/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run><Run>
+                <Run.Style>
+                    <Style TargetType="{x:Type Run}">
+                        <Setter Property="Text" Value="{Binding NameSpecialist, Source={x:Static Properties:PositiveResponseSettings.Default}}"/>
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ShowSpecialist, Source={x:Static Properties:PositiveResponseSettings.Default}}" Value="True"/>
+                                    <Condition Binding="{Binding NameSpecialist, Source={x:Static Properties:PositiveResponseSettings.Default}}" Value=""/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Text" Value="(отсутствует Ф.И.О. специалиста)"/>
+                                <Setter Property="Foreground" Value="{StaticResource Document.Foreground1}"/>
+                            </MultiDataTrigger>
+                            <DataTrigger Binding="{Binding ShowSpecialist, Source={x:Static Properties:PositiveResponseSettings.Default}}" Value="False">
+                                <Setter Property="Text" Value=""/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run>
+        </TextBlock>
+    </Canvas>
+</UserControl>

@@ -1,0 +1,246 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="ComboBox.ToogleButton.Static.Background" Color="#ff474747"/>
+    <SolidColorBrush x:Key="ComboBox.ToogleButton.Checked.Background" Color="#ff383838"/>
+    <SolidColorBrush x:Key="ComboBox.ToogleButton.Image.Brush" Color="#ffcecece"/>
+    <SolidColorBrush x:Key="ComboBox.TextBox.CaretBrush" Color="#ffffffff"/>
+    <SolidColorBrush x:Key="ComboBox.Foreground" Color="#ffffffff"/>
+    <SolidColorBrush x:Key="ComboBox.Static.BorderBrush" Color="#ff636363"/>
+    <SolidColorBrush x:Key="ComboBox.MouseOver.Transparent.BorderBrush" Color="#00828282"/>
+    <SolidColorBrush x:Key="ComboBox.MouseOver.Opaque.BorderBrush" Color="#ff828282"/>
+    <SolidColorBrush x:Key="ComboBox.Focused.BorderBrush" Color="#ff0f64d2"/>
+    <SolidColorBrush x:Key="ComboBox.Popup.Background" Color="#fff0f0f0"/>
+    <SolidColorBrush x:Key="ComboBox.Popup.BorderBrush" Color="#ff0078d7"/>
+    <SolidColorBrush x:Key="ComboBoxItem.Foreground" Color="#ff000000"/>
+    <SolidColorBrush x:Key="ComboBoxItem.Static.Background" Color="#fff0f0f0"/>
+    <SolidColorBrush x:Key="ComboBoxItem.MouseOver.Focused.Background" Color="#ff0078d7"/>
+    <SolidColorBrush x:Key="ComboBoxItem.Static.BorderBrush" Color="#000078d7"/>
+    <SolidColorBrush x:Key="ComboBoxItem.MouseOver.Focused.Selected.BorderBrush" Color="#ff0078d7"/>
+    <DropShadowEffect x:Key="ComboBox.DropShadowEffect" Opacity="0.4" ShadowDepth="1.5" Direction="300"/>
+    <Style x:Key="ComboBoxToogleButtonStyle" TargetType="{x:Type ToggleButton}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsChecked" Value="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal"/>
+                                <VisualState Name="MouseOver"/>
+                                <VisualState Name="Pressed"/>
+                                <VisualState Name="Disabled"/>
+                            </VisualStateGroup>
+                            <VisualStateGroup Name="FocusStates">
+                                <VisualState Name="Focused"/>
+                                <VisualState Name="Unfocused"/>
+                            </VisualStateGroup>
+                            <VisualStateGroup Name="CheckStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState Name="Checked">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="PART_Border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="{Binding Color, Source={StaticResource ComboBox.ToogleButton.Checked.Background}}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState Name="Unchecked"/>
+                                <VisualState Name="Indeterminate"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="14"/>
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="PART_Border" Grid.ColumnSpan="2" Background="{StaticResource ComboBox.ToogleButton.Static.Background}" BorderThickness="1" CornerRadius="3"/>
+                        <Image Grid.Column="1" Width="8" Height="4" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3,0">
+                            <Image.Source>
+                                <DrawingImage>
+                                    <DrawingImage.Drawing>
+                                        <GeometryDrawing Geometry="M8.354,0.354 L4.354,4.354 L0.354,0.354">
+                                            <GeometryDrawing.Pen>
+                                                <Pen Brush="{StaticResource ComboBox.ToogleButton.Image.Brush}" Thickness="1"/>
+                                            </GeometryDrawing.Pen>
+                                        </GeometryDrawing>
+                                    </DrawingImage.Drawing>
+                                </DrawingImage>
+                            </Image.Source>
+                        </Image>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ComboBoxTextBoxStyle" TargetType="{x:Type TextBox}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Visibility" Value="Hidden"/>
+        <Setter Property="CaretBrush" Value="{StaticResource ComboBox.TextBox.CaretBrush}"/>
+        <Setter Property="Margin" Value="{Binding Padding, RelativeSource={RelativeSource TemplatedParent}}"/>
+        <Setter Property="HorizontalAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}"/>
+        <Setter Property="VerticalAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}"/>
+        <Setter Property="IsReadOnly" Value="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <ScrollViewer x:Name="PART_ContentHost" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type ComboBox}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="{StaticResource ComboBox.Foreground}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="7,5"/>
+        <Setter Property="MinHeight" Value="35"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBox}">
+                    <Grid x:Name="PART_Grid">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState Name="Normal"/>
+                                <VisualState Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PART_Grid" Storyboard.TargetProperty="(Grid.Opacity)" To="0.56" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="PART_BorderMouseOver" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" To="{Binding Color, Source={StaticResource ComboBox.MouseOver.Opaque.BorderBrush}}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup Name="FocusStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState Name="Focused">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="PART_Border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" To="{Binding Color, Source={StaticResource ComboBox.Focused.BorderBrush}}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState Name="Unfocused"/>
+                                <VisualState Name="FocusedDropDown">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="PART_Border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" To="{Binding Color, Source={StaticResource ComboBox.Focused.BorderBrush}}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup Name="EditStates">
+                                <VisualState Name="Editable">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_Content" Storyboard.TargetProperty="(ContentPresenter.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Hidden}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_EditableTextBox" Storyboard.TargetProperty="(TextBox.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState Name="Uneditable"/>
+                            </VisualStateGroup>
+                            <VisualStateGroup Name="ValidationStates">
+                                <VisualState Name="Valid"/>
+                                <VisualState Name="InvalidFocused"/>
+                                <VisualState Name="InvalidUnfocused"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="14"/>
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="PART_BorderMouseOver" Grid.ColumnSpan="2" BorderBrush="{StaticResource ComboBox.Static.BorderBrush}" BorderThickness="1" CornerRadius="3"/>
+                        <Border x:Name="PART_Border" Grid.ColumnSpan="2" BorderBrush="{StaticResource ComboBox.MouseOver.Transparent.BorderBrush}" BorderThickness="1" CornerRadius="3"/>
+                        <ToggleButton Grid.ColumnSpan="2" Style="{StaticResource ComboBoxToogleButtonStyle}"/>
+                        <TextBox x:Name="PART_EditableTextBox" Style="{StaticResource ComboBoxTextBoxStyle}"/>
+                        <ContentPresenter x:Name="PART_Content" IsHitTestVisible="False" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"/>
+                        <Popup x:Name="PART_Popup" Placement="Bottom" AllowsTransparency="True" PopupAnimation="Slide" IsOpen="{TemplateBinding IsDropDownOpen}">
+                            <Border x:Name="PART_DropDownBorder" Background="{StaticResource ComboBox.Popup.Background}" BorderBrush="{StaticResource ComboBox.Popup.BorderBrush}" BorderThickness="1" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                <ScrollViewer>
+                                    <StackPanel IsItemsHost="True" KeyboardNavigation.TabNavigation="Contained"/>
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger SourceName="PART_Popup" Property="AllowsTransparency" Value="True">
+                            <Setter TargetName="PART_DropDownBorder" Property="Margin" Value="0,0,5,5"/>
+                            <Setter TargetName="PART_DropDownBorder" Property="Effect" Value="{StaticResource ComboBox.DropShadowEffect}"/>
+                        </Trigger>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter TargetName="PART_DropDownBorder" Property="MinHeight" Value="70"/>
+                        </Trigger>
+                        <Trigger Property="IsGrouping" Value="True">
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type ComboBoxItem}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Padding" Value="7,2"/>
+        <Setter Property="Foreground" Value="{StaticResource ComboBoxItem.Foreground}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                    <Border x:Name="PART_Border" Background="{StaticResource ComboBoxItem.Static.Background}" BorderBrush="{StaticResource ComboBoxItem.Static.BorderBrush}" BorderThickness="0,1">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal"/>
+                                <VisualState Name="Disabled"/>
+                                <VisualState Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="PART_Border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="{Binding Color, Source={StaticResource ComboBoxItem.MouseOver.Focused.Background}}" Duration="0"/>
+                                        <ColorAnimation Storyboard.TargetName="PART_Border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" To="{Binding Color, Source={StaticResource ComboBoxItem.MouseOver.Focused.Selected.BorderBrush}}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup Name="FocusStates">
+                                <VisualState Name="Focused">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="PART_Border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="{Binding Color, Source={StaticResource ComboBoxItem.MouseOver.Focused.Background}}" Duration="0"/>
+                                        <ColorAnimation Storyboard.TargetName="PART_Border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" To="{Binding Color, Source={StaticResource ComboBoxItem.MouseOver.Focused.Selected.BorderBrush}}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState Name="Unfocused"/>
+                            </VisualStateGroup>
+                            <VisualStateGroup Name="SelectionStates">
+                                <VisualState Name="Selected">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="PART_Border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" To="{Binding Color, Source={StaticResource ComboBoxItem.MouseOver.Focused.Selected.BorderBrush}}" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState Name="Unselected"/>
+                                <VisualState Name="SelectedUnfocused"/>
+                            </VisualStateGroup>
+                            <VisualStateGroup Name="ValidationStates">
+                                <VisualState Name="Valid"/>
+                                <VisualState Name="InvalidFocused"/>
+                                <VisualState Name="InvalidUnfocused"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <ContentPresenter Margin="{TemplateBinding Padding}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
